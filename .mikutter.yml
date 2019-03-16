@@ -1,0 +1,12 @@
+---
+slug: :twitter_home_tracker
+depends:
+  mikutter: 3.8.0
+  plugin:
+    - twitter
+    - streaming
+    - followingcontrol
+version: '1.0'
+author: shibafu528
+name: twitter_home_tracker
+description: 'FilterStreamを使ってHomeTLをストリーミング受信します。'
