@@ -50,9 +50,15 @@ Plugin.create(:twitter_home_tracker) do
   end
 
   def forwardable_message?(service, followings, msg)
-    # TODO: 本文がメンションから始まるツイートの場合「自己宛リプ」「メンションされている」「フォロイーにメンションしている」
-    #       に絞って転送する必要がある。そうしないとHomeに無関係のツイートが流入する。
-    followings.include?(msg.user)
+    # リプライは自分かフォロイーに向いているものに限定して転送する
+    # in_reply_toが付与されているが自己宛で@から始まっていないスレッドツイートや、メンションの場合は全て転送する
+    if msg.has_receive_message? && msg.body.start_with?("@")
+      followings.include?(msg.user) && msg.receive_user_screen_names.any? { |idname|
+        service.idname == idname || followings.any? { |u| u.idname == idname }
+      }
+    else
+      followings.include?(msg.user)
+    end
   end
 
 end
