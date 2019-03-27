@@ -44,7 +44,7 @@ Plugin.create(:twitter_home_tracker) do
       world.class.slug == :twitter
     }
     
-    followings = Plugin[:followingcontrol].relation.followings[twitter.user_obj] || []
+    followings = (Plugin[:followingcontrol].relation.followings[twitter.user_obj] || []).compact
 
     Plugin.call(:update, twitter, twitter_msgs.select { |m| forwardable_message?(twitter, followings, m) })
   end
