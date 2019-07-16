@@ -46,7 +46,10 @@ Plugin.create(:twitter_home_tracker) do
     
     followings = (Plugin[:followingcontrol].relation.followings[twitter.user_obj] || []).compact
 
-    Plugin.call(:update, twitter, twitter_msgs.select { |m| forwardable_message?(twitter, followings, m) })
+    forwardable_msgs = twitter_msgs.select { |m| forwardable_message?(twitter, followings, m) }
+    Plugin.call(:update, twitter, forwardable_msgs)
+    Plugin.call(:mention, twitter, forwardable_msgs.select { |m| m.to_me? })
+    Plugin.call(:mypost, twitter, forwardable_msgs.select { |m| m.from_me? })
   end
 
   def forwardable_message?(service, followings, msg)
