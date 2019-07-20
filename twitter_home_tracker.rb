@@ -56,7 +56,12 @@ Plugin.create(:twitter_home_tracker) do
     # リプライは自分かフォロイーに向いているものに限定して転送する
     # (昔ながらのin_reply_toを持たない手打ちのリプライも対象)
     # in_reply_toが付与されているが自己宛で@から始まっていないスレッドツイートや、メンションの場合は全て転送する
-    mentions = msg.receive_user_screen_names
+    if defined? msg.receive_user_idnames
+      mentions = msg.receive_user_idnames
+    else
+      mentions = msg.receive_user_screen_names
+    end
+
     if !mentions.empty? && msg.body.start_with?("@")
       followings.include?(msg.user) && mentions.any? { |idname|
         service.idname == idname || followings.any? { |u| u.idname == idname }
