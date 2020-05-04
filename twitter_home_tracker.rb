@@ -53,6 +53,9 @@ Plugin.create(:twitter_home_tracker) do
   end
 
   def forwardable_message?(service, followings, msg)
+    # 自分自身のツイートはすべて転送する
+    return true if msg.from_me? 
+
     # リプライは自分かフォロイーに向いているものに限定して転送する
     # (昔ながらのin_reply_toを持たない手打ちのリプライも対象)
     # in_reply_toが付与されているが自己宛で@から始まっていないスレッドツイートや、メンションの場合は全て転送する
