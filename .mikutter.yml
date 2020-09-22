@@ -6,7 +6,7 @@ depends:
     - twitter
     - streaming
     - followingcontrol
-version: '1.0'
+version: '1.1'
 author: shibafu528
 name: twitter_home_tracker
 description: 'FilterStreamを使ってHomeTLをストリーミング受信します。'
